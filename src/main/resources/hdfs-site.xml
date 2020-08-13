@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+<!--
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License. See accompanying LICENSE file.
+-->
+
+<!-- Put site-specific property overrides in this file. -->
+
+<configuration>
+
+<!-- 指定副本数，不能超过机器节点数  -->
+  <property>
+    <name>dfs.replication</name>
+    <value>3</value>
+  </property>
+
+  <!-- 为namenode集群定义一个services name -->
+  <property>
+    <name>dfs.nameservices</name>
+    <value>ns1</value>
+  </property>
+
+  <!-- nameservice 包含哪些namenode，为各个namenode起名 -->
+  <property>
+    <name>dfs.ha.namenodes.ns1</name>
+    <value>master,slave1</value>
+  </property>
+
+  <!-- 名为master188的namenode的rpc地址和端口号，rpc用来和datanode通讯 -->
+  <property>
+    <name>dfs.namenode.rpc-address.ns1.master</name>
+    <value>master:8020</value>
+  </property>
+
+  <!-- 名为master189的namenode的rpc地址和端口号，rpc用来和datanode通讯 -->
+  <property>
+    <name>dfs.namenode.rpc-address.ns1.slave1</name>
+    <value>slave1:8020</value>
+  </property>
+
+  <!--名为master188的namenode的http地址和端口号，用来和web客户端通讯 -->
+  <property>
+    <name>dfs.namenode.http-address.ns1.master</name>
+    <value>master:50070</value>
+  </property>
+
+  <!-- 名为master189的namenode的http地址和端口号，用来和web客户端通讯 -->
+  <property>
+    <name>dfs.namenode.http-address.ns1.slave1</name>
+    <value>slave1:50070</value>
+  </property>
+  
+  <!-- namenode间用于共享编辑日志的journal节点列表 -->
+  <property>
+    <name>dfs.namenode.shared.edits.dir</name>
+    <value>qjournal://master:8485;slave1:8485;slave2:8485/ns1</value>
+  </property>
+
+  <!-- 指定该集群出现故障时，是否自动切换到另一台namenode -->
+  <property>
+    <name>dfs.ha.automatic-failover.enabled.ns1</name>
+    <value>true</value>
+  </property>
+
+  <!-- journalnode 上用于存放edits日志的目录 -->
+  <property>
+    <name>dfs.journalnode.edits.dir</name>
+    <value>/home/hadoop/hadoop-2.6.5/tmp/data/dfs/journalnode</value>
+  </property>
+
+  <!-- 客户端连接可用状态的NameNode所用的代理类 -->
+  <property>
+    <name>dfs.client.failover.proxy.provider.ns1</name>
+    <value>org.apache.hadoop.hdfs.server.namenode.ha.ConfiguredFailoverProxyProvider</value>
+  </property>
+
+  <!-- 一旦需要NameNode切换，使用ssh方式进行操作 -->
+  <property>
+    <name>dfs.ha.fencing.methods</name>
+    <value>sshfence</value>
+  </property>
+
+  <!-- 如果使用ssh进行故障切换，使用ssh通信时用的密钥存储的位置 -->
+  <property>
+    <name>dfs.ha.fencing.ssh.private-key-files</name>
+    <value>/root/.ssh/id_rsa</value>
+  </property>
+
+  <!-- connect-timeout超时时间 -->
+  <property>
+    <name>dfs.ha.fencing.ssh.connect-timeout</name>
+    <value>30000</value>
+  </property>
+
+  <property>
+    <name>dfs.permissions</name>
+    <value>false</value>
+  </property>
+
+</configuration>

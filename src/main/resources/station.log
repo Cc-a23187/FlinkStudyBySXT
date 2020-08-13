@@ -1,0 +1,68 @@
+station_0,18600003612,18900004575,barring,1577080453123,0
+station_9,18600003186,18900002113,success,1577080453123,32
+station_3,18600003794,18900009608,success,1577080453123,4
+station_1,18600000005,18900007729,fail,1577080453123,0
+station_1,18600000005,18900007729,success,1577080603123,349
+station_8,18600007461,18900006987,barring,1577080453123,0
+station_5,18600009356,18900006066,busy,1577080455129,0
+station_4,18600001941,18900003949,busy,1577080455129,0
+station_3,18600001263,18900001168,fail,1577080455129,0
+station_3,18600001936,18900009150,busy,1577080455129,0
+station_9,18600005798,18900002238,busy,1577080455129,0
+station_4,18600008825,18900008585,busy,1577080457129,0
+station_6,18600005404,18900000558,success,1577080457129,5
+station_2,18600002658,18900002018,busy,1577080457129,0
+station_2,18600004925,18900001911,busy,1577080457129,0
+station_5,18600003713,18900000824,busy,1577080457129,0
+station_1,18600004055,18900008510,fail,1577080459130,0
+station_2,18600004974,18900005474,busy,1577080459130,0
+station_2,18600003532,18900008128,success,1577080459130,10
+station_2,18600003532,18900008128,success,1577080466130,15
+station_8,18600007699,18900003716,barring,1577080459130,0
+station_0,18600003502,18900009859,fail,1577080459130,0
+station_0,18600003502,18900009859,success,1577080468130,0
+station_8,18600007699,18900003716,barring,1577080459130,0
+station_0,18600003502,18900009859,fail,1577080459130,0
+station_0,18600003502,18900009859,success,1577080468130,0
+station_5,18600003713,18900000824,busy,1577080457129,0
+.map(new MapFunction<String, StationLog>() {
+                    @Override
+                    public StationLog map(String s) throws Exception {
+                        String[] arr =s.split(",");
+                        StationLog stationLog = new StationLog(arr[0].trim(),arr[1].trim(),arr[2].trim(),arr[3].trim(),Long.valueOf(arr[4].trim()),Long.valueOf(arr[5].trim()));
+                        stationLog.setSid(arr[0].trim());
+                        return stationLog;
+                    }
+                })
+                .keyBy(new KeySelector<StationLog, String>() {
+                    @Override
+                    public String getKey(StationLog stationLog) throws Exception {
+                        return stationLog.getCallIn();
+                    }
+                })
+                .process(new MonitorCallFail())
+                .print("process");
+
+
+
+
+                        DataStream<StationLog> map = dataStream.map(new MapFunction<String, StationLog>() {
+                                    @Override
+                                    public StationLog map(String s) throws Exception {
+                                        String[] arr =s.split(",");
+                                        StationLog stationLog = new StationLog(arr[0].trim(),arr[1].trim(),arr[2].trim(),arr[3].trim(),Long.valueOf(arr[4].trim()),Long.valueOf(arr[5].trim()));
+                                        stationLog.setSid(arr[0].trim());
+                                        return stationLog;
+                                    }
+                                });
+                //        map.print("map");
+                        KeyedStream<StationLog, String> keyBy = map.keyBy(new KeySelector<StationLog, String>() {
+                            @Override
+                            public String getKey(StationLog stationLog) throws Exception {
+                                return stationLog.getCallIn();
+                            }
+                        });
+                //        keyBy.print("keyBy");
+                        SingleOutputStreamOperator<String> process = keyBy.process(new MonitorCallFail());
+
+                        process.print("process");
