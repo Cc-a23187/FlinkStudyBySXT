@@ -23,7 +23,8 @@ public class FunctionClassTransformation {
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
         env.setParallelism(1);
         //读取数据
-        String filepath= "H:\\work\\亚信\\Flink\\FlinkForJavaTest2\\src\\main\\resources\\station.log";
+        String filepath= "H:\\work\\亚信\\Flink\\FlinkStudyBySXT\\src\\main\\resources\\station.log";
+//        String filepat2=env.getClass().getResource("/station.log").getPath();////FlinkStudyBySXT/target/classes/station.log
         DataStream<StationLog> dataStream = env.readTextFile(filepath)
                 .map(new MapFunction<String, StationLog>() {
                     @Override

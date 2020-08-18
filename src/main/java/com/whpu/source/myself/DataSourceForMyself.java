@@ -2,6 +2,7 @@ package com.whpu.source.myself;
 
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.windowing.time.Time;
 
 /**
  * @author cc
@@ -15,6 +16,8 @@ public class DataSourceForMyself {
         env.setParallelism(1);
         //指定数据源
         DataStream<StationLog> stream = env.addSource(new MyConsumerDataSource());
+        //每2秒钟处理一次数据
+        stream.timeWindowAll(Time.seconds(2));
         //数据处理
         stream.print();
         env.execute();

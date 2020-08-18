@@ -3,6 +3,8 @@ package com.whpu.source.myself;
 /**
  * @author cc
  * @create 2020-07-29-16:23
+ * @deprecated 自定义的Source,需求：每隔两秒钟，生成10条随机基站通话日志数据
+ *
  * 主要的方法，启动一个source，并且从source中返回数据
  * 如果run方法停止，则数据流终止
  */
@@ -27,12 +29,13 @@ public class MyConsumerDataSource implements SourceFunction<StationLog> {
                 sourceContext.collect(stationLog);//发数据
             }
 
-            Thread.sleep(2000);//每发送一次数据休眠2秒
+            Thread.sleep(1000);//每发送一次数据休眠2秒
         }
 
     }
+    //终止数据流
     @Override
     public void cancel() {
-        flag = true;
+        flag = false;
     }
 }
