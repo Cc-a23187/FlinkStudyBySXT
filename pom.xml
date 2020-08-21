@@ -160,8 +160,21 @@ under the License.
 
 		<dependency>
 			<groupId>org.apache.flink</groupId>
-			<artifactId>flink-statebackend-rocksdb_2.11</artifactId>
+			<artifactId>flink-statebackend-rocksdb_${scala.binary.version}</artifactId>
 			<version>${flink.version}</version>
+		</dependency>
+		<!--table API-->
+		<dependency>
+			<groupId>org.apache.flink</groupId>
+			<artifactId>flink-table-planner_${scala.binary.version}</artifactId>
+			<version>${flink.version}</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.flink</groupId>
+			<artifactId>flink-table-api-scala-bridge_${scala.binary.version}</artifactId>
+			<version>${flink.version}</version>
+			<scope>provided</scope>
 		</dependency>
 
 	</dependencies>

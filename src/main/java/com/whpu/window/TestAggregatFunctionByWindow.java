@@ -17,7 +17,7 @@ import org.apache.flink.streaming.api.windowing.time.Time;
 /**
  * @author cc
  * @create 2020-08-17-17:00
- * @deprecated 每隔3秒计算最近5秒内，每个基站的日志数量
+ * @deprecated 每隔3秒计算最近5秒内，每个基站的日志数量  滑动窗口
  */
 public class TestAggregatFunctionByWindow {
     public static void main(String[] args) throws Exception {
@@ -45,6 +45,7 @@ public class TestAggregatFunctionByWindow {
             }
         }).keyBy(1
         ).window(SlidingProcessingTimeWindows.of(Time.seconds(5),Time.seconds(3))
+                //和 .timeWindow(Time.seconds(5),Time.seconds(3))相同
         ).aggregate(new AggregateFunction<Tuple2<String, Integer>, Tuple2<String,Long>, Tuple2<String,Long>>() {
                         @Override
                         public Tuple2<String, Long> createAccumulator() {

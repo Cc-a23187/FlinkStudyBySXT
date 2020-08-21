@@ -17,6 +17,8 @@ public class DataSourceForMyself {
         //指定数据源
         DataStream<StationLog> stream = env.addSource(new MyConsumerDataSource());
         //每2秒钟处理一次数据
+         /*windowAll方法Global Window：如果是 Non-Keyed 类型，则调用 WindowsAll()方法，
+         所有的数据都会在窗口算子中由到一个 Task 中计算，并得到全局统计结果。*/
         stream.timeWindowAll(Time.seconds(2));
         //数据处理
         stream.print();

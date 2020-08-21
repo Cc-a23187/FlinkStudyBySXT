@@ -42,14 +42,14 @@ public class TestReduceFunctionByWindow {
                         return stationLog;
                     }
                 });//stationLog -> Tuple2.of(stationLog, stationLog.sid
-        dataStream.print("first");
+//        dataStream.print("first");
         SingleOutputStreamOperator<Tuple2<String, Integer>> streamSink = dataStream.map(new MapFunction<StationLog, Tuple2<String,Integer>>() {
             @Override
             public Tuple2<String, Integer> map(StationLog stationLog) throws Exception {
                 return Tuple2.of(stationLog.sid,1);
             }
         });
-        streamSink.print("sec");
+//        streamSink.print("sec");
         SingleOutputStreamOperator<Tuple2<String, Integer>> reduce = streamSink.keyBy(1)
                 .timeWindow(Time.seconds(5))
                 .reduce(new ReduceFunction<Tuple2<String, Integer>>() {
