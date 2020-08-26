@@ -15,7 +15,7 @@ import org.apache.flink.types.Row;
  * @author cc
  * @create 2020-08-25-17:41
  * @description  基于flink sql的滚动窗口操作
- * 每隔5s统计，每个基站的通话数量，假设数据是乱序。最多延迟3s
+ * 每隔5s统计10s内统计，每个基站的通话数量，假设数据是乱序。最多延迟3s
  */
 public class TestSildingWindowBySQL {
     public static void main(String[] args) throws Exception {

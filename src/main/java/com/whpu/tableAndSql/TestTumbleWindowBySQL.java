@@ -52,7 +52,7 @@ public class TestTumbleWindowBySQL {
                 .select("sid , window.start,window.end,sid.count,duration.sum");*/
         //每5秒统计每个基站通话成功总时长  使用sql统计
         tableEnv.registerDataStream("station" , fileSource , "sid,callOut,callIn,callType,callTime.rowTime,duration");
-        Table result = tableEnv.sqlQuery("select sid ,count(sid),sum(duration) as sd "
+        Table result = tableEnv.sqlQuery("select sid ,TUMBLE_START(callTime,interval '5' second),TUMBLE_END(callTime,interval '5' second),count(sid),sum(duration) as sd "
                 + "from station "
                 + "where callType='success' "
                 + "group by tumble(callTime,interval '5' second),sid");
