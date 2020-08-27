@@ -1,7 +1,4 @@
-
-
-
-
+csdn博客 https://blog.csdn.net/sinat_38292017
 # Flink   CheckPoint机制
 
 ## 1、实验目的
