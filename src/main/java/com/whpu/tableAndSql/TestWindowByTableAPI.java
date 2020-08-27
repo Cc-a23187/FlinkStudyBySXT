@@ -7,6 +7,7 @@ import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.api.functions.timestamps.BoundedOutOfOrdernessTimestampExtractor;
 import org.apache.flink.streaming.api.windowing.time.Time;
 import org.apache.flink.table.api.EnvironmentSettings;
+import org.apache.flink.table.api.Slide;
 import org.apache.flink.table.api.Table;
 import org.apache.flink.table.api.Tumble;
 import org.apache.flink.table.api.java.StreamTableEnvironment;
@@ -50,7 +51,8 @@ public class TestWindowByTableAPI {
                 //先按照窗口分组，再按照sid分组
                 .groupBy("window,sid")
                 .select("sid , window.start,window.end,sid.count,duration.sum");
-
+        /*//滑动窗口写法
+        table.window(Slide.over("10.second").every("5.second").on("callTime").as("window"));*/
         tableEnv.toRetractStream(result, Row.class)
                 .filter(t -> t.f0)
                 .print();
