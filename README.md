@@ -1,4 +1,7 @@
 csdn博客 https://blog.csdn.net/sinat_38292017
+
+
+
 # Flink   CheckPoint机制
 
 ## 1、实验目的
@@ -29,9 +32,9 @@ State 和 Operator State。Flink 会在输入的数据集上间隔性地生成 c
 
 通过栅栏（barrier）将间隔时间段内的数据划分到相应的 checkpoint 中。如下图：
 
-[外链图片转存失败,源站可能有防盗链机制,建议将图片保存下来直接上传(img-sR6giX1B-1597289981701)(C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20200813102944200.png)]
+![image-20200813102944200](${imgs}/image-20200813102944200.png)
 
-[外链图片转存失败,源站可能有防盗链机制,建议将图片保存下来直接上传(img-VRB4KSqr-1597289981708)(${imgs}/image-20200813103539214.png)]
+![image-20200813103539214](${imgs}/image-20200813103539214.png)
 
 
 
@@ -119,15 +122,15 @@ env.getCheckpointConfig().enableExternalizedCheckpoints(CheckpointConfig.Externa
 
 现需要启动hadoop（启动hdfs即可），然后启动flink环境；
 
-​	[外链图片转存失败,源站可能有防盗链机制,建议将图片保存下来直接上传(img-TZcORj7k-1597289981711)(${imgs}/image-20200813110039584.png)]
+​	![image-20200813110039584](${imgs}/image-20200813110039584.png)
 
-[外链图片转存失败,源站可能有防盗链机制,建议将图片保存下来直接上传(img-mjFa7Gta-1597289981715)(${imgs}/image-20200813110009164.png)]
+![image-20200813110009164](${imgs}/image-20200813110009164.png)
 
 检查hdfs文件系统中是否存在检查点目录（测试），如果存在需要先清掉；
 
-```hdfs dfs -rm -r /checkpoint```
+```hdfs dfs -rm -r /checkpoint``` 
 
-[外链图片转存失败,源站可能有防盗链机制,建议将图片保存下来直接上传(img-fo2wZnAk-1597289981718)(${imgs}/image-20200813105929027.png)]
+![image-20200813105929027](${imgs}/image-20200813105929027.png)
 
 程序写好后打包提交到Flink上，使用FlinkUI做提交上传打包后的jar程序;
 
@@ -135,21 +138,21 @@ env.getCheckpointConfig().enableExternalizedCheckpoints(CheckpointConfig.Externa
 
 找到Flink检查点位置，进入到hadoop webUI；
 
-[外链图片转存失败,源站可能有防盗链机制,建议将图片保存下来直接上传(img-Qs7Y3AlB-1597289981719)(${imgs}/image-20200813110552783.png)]
+![image-20200813110552783](${imgs}/image-20200813110552783.png)
 
 找到_metadata，检查点数据存放目录；
 
 为后面恢复提供目录信息
 
-[外链图片转存失败,源站可能有防盗链机制,建议将图片保存下来直接上传(img-5uwXCtMa-1597289981721)(${imgs}/image-20200813110702123.png)]
+![image-20200813110702123](${imgs}/image-20200813110702123.png)
 
 #### 1、Flink UI恢复检查点
 
-[外链图片转存失败,源站可能有防盗链机制,建议将图片保存下来直接上传(img-NhLLxEVh-1597289981724)(${imgs}/image-20200813110150291.png)]
+![image-20200813110150291](${imgs}/image-20200813110150291.png)
 
 #### 2、在linux命令行启动Flink程序，恢复检查点；
 
-[外链图片转存失败,源站可能有防盗链机制,建议将图片保存下来直接上传(img-fJsdRcVw-1597289981728)(${imgs}/image-20200813110332105.png)]
+![image-20200813110332105](${imgs}/image-20200813110332105.png)
 
 ```bin/flink run -d -s hdfs://slave1:8020/checkpoint/cp2/08c0531b854fccd004630710af5545c5/chk-10  -c com.whpu.state.TestCheckPointByHDFS /home/FlinkJar/FlinkStudyBySXT-1.0-SNAPSHOT.jar```
 
@@ -159,11 +162,11 @@ env.getCheckpointConfig().enableExternalizedCheckpoints(CheckpointConfig.Externa
 
 使用NETCAT发送数据，flink程序能够继续读取，并处理数据；
 
-[外链图片转存失败,源站可能有防盗链机制,建议将图片保存下来直接上传(img-kU6AXyYB-1597289981729)(${imgs}/image-20200813110812943.png)]
+![image-20200813110812943](${imgs}/image-20200813110812943.png)
 
 flink UI
 
-[外链图片转存失败,源站可能有防盗链机制,建议将图片保存下来直接上传(img-VNgIreUt-1597289981731)(${imgs}/image-20200813110943861.png)]
+![image-20200813110943861](${imgs}/image-20200813110943861.png)
 
 
 
@@ -591,6 +594,8 @@ javax.xml.parsers.DocumentBuilderFactory: Provider org.apache.xerces.jaxp.Docume
 其实程序本身并不复杂，无非就是几个配置项，但是可能自己对flink提交任务还是不够熟练，对错误无法精准定位，导致简单的问题卡很久；checkpoint这块主要还是要理解flink处理原理；
 
 
+
 ### 代码github地址：
+
 https://github.com/Cc-a23187/FlinkStudyBySXT
 :raised_hands:  :point_right::star::star:
