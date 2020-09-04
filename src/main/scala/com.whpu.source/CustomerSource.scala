@@ -8,11 +8,12 @@ import org.apache.flink.streaming.api.functions.source.SourceFunction
 import org.apache.flink.streaming.api.scala.StreamExecutionEnvironment
 import org.apache.flink.streaming.api.scala._
 import scala.util.Random
+import scala.StationLog
 
 /**
   * 自定义的Source,需求：每隔两秒钟，生成10条随机基站通话日志数据
   */
-class MyCustomerSource extends SourceFunction[StationLog]{
+object MyCustomerSource extends SourceFunction[StationLog]{
   //是否终止数据流的标记
   var flag =true;
 
